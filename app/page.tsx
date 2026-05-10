@@ -50,7 +50,10 @@ const formatTime = (seconds: number) => {
   return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
 };
 
-const generateId = () => Math.floor(Math.random() * 10000).toString(16).padStart(4, "0");
+const generateId = () =>
+  Math.floor(Math.random() * 10000)
+    .toString(16)
+    .padStart(4, "0");
 
 const buildTimer = (id: string, minutes: number): TimerData => ({
   id,
@@ -110,7 +113,7 @@ export default function Page() {
             ...timer,
             remaining: nextRemaining,
           };
-        })
+        }),
       );
     }, 1000);
 
@@ -141,9 +144,7 @@ export default function Page() {
     }
 
     if (runningTimers.length > 0) {
-      const minTimer = runningTimers.reduce((prev, curr) =>
-        prev.remaining < curr.remaining ? prev : curr
-      );
+      const minTimer = runningTimers.reduce((prev, curr) => (prev.remaining < curr.remaining ? prev : curr));
       document.title = `${formatTime(minTimer.remaining)} - Chronos`;
       return;
     }
@@ -170,9 +171,7 @@ export default function Page() {
   useEffect(() => {
     const ringingTimers = timers.filter((timer) => timer.isRinging);
     const ringingIds = ringingTimers.map((timer) => timer.id);
-    const newRingingTimers = ringingTimers.filter(
-      (timer) => !lastRingingIdsRef.current.includes(timer.id)
-    );
+    const newRingingTimers = ringingTimers.filter((timer) => !lastRingingIdsRef.current.includes(timer.id));
 
     if (newRingingTimers.length > 0 && typeof window !== "undefined" && "vibrate" in navigator) {
       navigator.vibrate([250, 150, 250, 150, 400]);
@@ -210,7 +209,7 @@ export default function Page() {
           status: timer.status === "running" ? "paused" : "running",
           isRinging: false,
         };
-      })
+      }),
     );
   };
 
@@ -224,7 +223,7 @@ export default function Page() {
           status: "paused",
           isRinging: false,
         };
-      })
+      }),
     );
   };
 
@@ -243,7 +242,7 @@ export default function Page() {
           status: "paused",
           isRinging: false,
         };
-      })
+      }),
     );
   };
 
@@ -273,7 +272,7 @@ export default function Page() {
           status: "paused",
           isRinging: false,
         };
-      })
+      }),
     );
   };
 
@@ -288,7 +287,7 @@ export default function Page() {
           status: "paused",
           isRinging: false,
         };
-      })
+      }),
     );
   };
 
@@ -297,7 +296,7 @@ export default function Page() {
       prev.map((timer) => {
         if (timer.id !== id) return timer;
         return { ...timer, title: newTitle };
-      })
+      }),
     );
   };
 
@@ -306,7 +305,7 @@ export default function Page() {
       prev.map((timer) => {
         if (timer.id !== id) return timer;
         return { ...timer, alarmEnabled: !timer.alarmEnabled };
-      })
+      }),
     );
   };
 
@@ -320,7 +319,7 @@ export default function Page() {
           status: "paused",
           isRinging: false,
         };
-      })
+      }),
     );
   };
 
@@ -334,16 +333,10 @@ export default function Page() {
           <h1 className="text-[2.5rem] leading-none font-normal tracking-wide flex items-baseline text-white">
             CHRONOS<span className="text-[#2962ff] font-bold">.</span>
           </h1>
-          <p className="text-[11px] font-semibold tracking-[0.4em] text-neutral-500 mt-3 uppercase">
-            Remainder Clock
-          </p>
+          <p className="text-[11px] font-semibold tracking-[0.4em] text-neutral-500 mt-3 uppercase">Remainder Clock</p>
         </div>
 
         <div className="flex items-center gap-6">
-          <div className="flex items-center gap-3 bg-[#111116] border border-white/5 pl-5 pr-6 py-2.5 rounded-full text-[11px] font-mono tracking-widest text-[#a1a1aa]">
-            <div className="w-2 h-2 rounded-full bg-[#22c55e] shadow-[0_0_8px_rgba(34,197,94,0.3)]" />
-            SYNCED TO DB
-          </div>
           <button
             onClick={() => addTimer(15)}
             className="bg-[#2962ff] hover:bg-[#2051db] transition-colors text-white text-[13px] font-bold tracking-wide px-8 py-3.5 rounded-full shadow-[0_0_20px_rgba(41,98,255,0.25)] flex items-center justify-center gap-1.5"
@@ -354,7 +347,7 @@ export default function Page() {
       </header>
 
       <main className="relative z-10 flex-1 w-full max-w-[1400px] mx-auto px-12 pb-12">
-        <div className="flex flex-wrap gap-8 items-stretch pt-6">
+        <div className="flex flex-wrap  gap-4 justify-center pt-6">
           <AnimatePresence mode="popLayout">
             {timers.map((timer) => (
               <motion.div
@@ -383,10 +376,7 @@ export default function Page() {
 
           <motion.div layout>
             <div className="w-[320px] h-[480px] rounded-[32px] border border-dashed border-white/10 flex flex-col items-center justify-center gap-6 hover:bg-white/[0.015] hover:border-white/20 transition-all group">
-              <button
-                onClick={() => addTimer(15)}
-                className="flex flex-col items-center gap-6 cursor-pointer"
-              >
+              <button onClick={() => addTimer(15)} className="flex flex-col items-center gap-6 cursor-pointer">
                 <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center text-[#52525b] group-hover:text-white group-hover:border-white/30 transition-all group-hover:scale-105">
                   <Plus className="w-6 h-6 stroke-[1.5]" />
                 </div>
@@ -488,7 +478,7 @@ function TimerCard({
   const ringColor = timer.isRinging ? "#ef4444" : "#8f00ff";
 
   return (
-    <div className="w-[320px] h-[480px] bg-[#121216] rounded-[32px] border border-white/5 p-8 flex flex-col relative group shadow-2xl">
+    <div className="w-auto h-[480px] bg-[#121216] rounded-[32px] border border-white/5 p-8 flex flex-col relative group shadow-2xl">
       <div className="flex justify-between items-center mb-10 gap-4">
         {isEditingTitle ? (
           <input
@@ -520,10 +510,7 @@ function TimerCard({
             {timer.alarmEnabled ? "alarm on" : "alarm off"}
           </button>
           <span className="text-[11px] text-[#52525b] font-mono">#{timer.id}</span>
-          <button
-            onClick={onRemove}
-            className="text-[#52525b] hover:text-[#e4e4e7] transition-colors -mr-1"
-          >
+          <button onClick={onRemove} className="text-[#52525b] hover:text-[#e4e4e7] transition-colors -mr-1">
             <X className="w-5 h-5 stroke-[1.5]" />
           </button>
         </div>
@@ -532,14 +519,7 @@ function TimerCard({
       <div className="flex-1 flex items-center justify-center relative">
         <div className="absolute inset-0 flex items-center justify-center">
           <svg className="w-[240px] h-[240px] -rotate-90" viewBox="0 0 120 120">
-            <circle
-              cx="60"
-              cy="60"
-              r="54"
-              fill="none"
-              stroke={isDone ? "#18181b" : "#201c2b"}
-              strokeWidth="4"
-            />
+            <circle cx="60" cy="60" r="54" fill="none" stroke={isDone ? "#18181b" : "#201c2b"} strokeWidth="4" />
             {!isDone && (
               <motion.circle
                 cx="60"
